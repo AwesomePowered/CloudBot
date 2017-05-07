@@ -32,13 +32,16 @@ def load_attacks(bot):
     """
     :type bot: cloudbot.bot.CloudBot
     """
-    global larts, flirts, kills, slaps
+    global larts, flirts, kills, slaps, rekts
 
     with codecs.open(os.path.join(bot.data_dir, "larts.txt"), encoding="utf-8") as f:
         larts = [line.strip() for line in f.readlines() if not line.startswith("//")]
 
     with codecs.open(os.path.join(bot.data_dir, "flirts.txt"), encoding="utf-8") as f:
         flirts = [line.strip() for line in f.readlines() if not line.startswith("//")]
+
+    with codecs.open(os.path.join(bot.data_dir, "rekts.txt"), encoding="utf-8") as f:
+        rekts = [line.strip() for line in f.readlines() if not line.startswith("//")]
 
     with codecs.open(os.path.join(bot.data_dir, "kills.json"), encoding="utf-8") as f:
         kills = json.load(f)
@@ -80,6 +83,25 @@ def flirt(text, conn, nick, message):
         target = nick
 
     message('{}, {}'.format(target, random.choice(flirts)))
+
+
+@asyncio.coroutine
+@hook.command
+def rekt(text, conn, nick, message):
+    """<user> - rekts <user>"""
+    target = text.strip()
+
+    if not is_valid(target):
+        return "I can't attack that."
+
+    if is_self(conn, target):
+        # user is trying to make the bot attack itself!
+        target = nick
+
+    if random.randint(0, 100) < 30: #hope ur happy md_5
+        message('{}, {}'.format(target, "[ ] Not rekt"))
+    else:
+        message('{}, {}'.format(target, random.choice(rekts)))
 
 
 @asyncio.coroutine
