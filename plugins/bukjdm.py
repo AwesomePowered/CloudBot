@@ -56,7 +56,7 @@ def bukjdm(text):
             if not url in out:
                 out.append(url)
         if len(out) > 3:
-            data = web.haste("\n".join(out))
+            data = web.Hastebin("\n".join(out))
             return "%s can be found in: %s %s %s and %s other places: %s" % (text, out[0], out[1], out[2], len(out) - 3, data)
         else:
             return "%s can be found in: " % text + " ".join(out)
