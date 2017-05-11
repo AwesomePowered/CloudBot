@@ -91,8 +91,13 @@ def flirt(text, conn, nick, message):
 @asyncio.coroutine
 @hook.command
 def rekt(text, conn, nick, message):
-    """<user> - rekts <user>"""
+    #"""<user> - rekts <user>"""
+
     target = text.strip()
+
+    if target == "":
+        message(random.choice(rekts))
+        return
 
     if not is_valid(target):
         return "I can't attack that."
