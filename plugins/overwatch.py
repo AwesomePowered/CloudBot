@@ -18,7 +18,7 @@ import json
 def owrank(text,bot,notice):
     """ Check a persons overwatch rank .owstats battle#id"""
 
-    url = "https://owapi.net/api/v3/u/{}/blob?format=json_pretty".format(text.replace("#","-"))
+    url = "https://owapi.net/api/v3/u/{}/blob".format(text.replace("#","-"))
 
     notice("Requesting stats, please hold on.")
 
