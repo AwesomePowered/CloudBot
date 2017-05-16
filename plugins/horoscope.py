@@ -52,8 +52,7 @@ def horoscope(text, db, bot, notice, nick):
 
     soup = BeautifulSoup(request.text)
 
-    horoscope_text = str(soup.find_all(attrs={'class': 'horoscope-content'})).split("\n")[2].split("> - ")[1]
-
+    horoscope_text = soup.find_all(attrs={'class': 'horoscope-content'})[0].text
 
     if not horoscope_text:
         return "Could not get the horoscope for {}.".format(text)
