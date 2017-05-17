@@ -191,3 +191,10 @@ def listfactoids(notice):
             reply_text.append(word)
             reply_text_length += added_length
     notice(", ".join(reply_text))
+
+
+@asyncio.coroutine
+@hook.command(autohelp=False, permissions=["listfactoids"])
+def factoids(notice, db):
+    rows = db.execute("select * from mem").fetchall()
+    notice(web.paste(u"\n".join(u"?{0} ({2})\n    {1}\n".format(*row) for row in rows)))
