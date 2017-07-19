@@ -19,10 +19,10 @@ def refresh_fml_cache(loop):
     request = yield from loop.run_in_executor(None, _func)
     soup = BeautifulSoup(request.text)
 
-    for e in soup.find_all('div', {'class': 'post article'}):
-        fml_id = int(e['id'])
-        text = ''.join(e.find('p').find_all(text=True))
-        fml_cache.append((fml_id, text))
+    for e in soup.find_all('p', {'class': 'block'}):
+        for links in e.find('a').find_all(text=True):
+            if 'Today' in links: #Best hack ever
+                fml_cache.append(links)
 
 
 @asyncio.coroutine
@@ -54,9 +54,9 @@ def fml(reply, loop):
     """- gets a random quote from fmyfife.com"""
 
     # grab the last item in the fml cache and remove it
-    fml_id, text = fml_cache.pop()
+    text = fml_cache.pop()
     # reply with the fml we grabbed
-    reply('(#{}) {}'.format(fml_id, text))
+    reply('{}'.format( text))
     # refresh fml cache if its getting empty
     if len(fml_cache) < 3:
         yield from refresh_fml_cache(loop)
