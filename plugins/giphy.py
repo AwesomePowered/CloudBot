@@ -13,10 +13,14 @@ def randomgif(text, bot):
         req = requests.get(url, headers={"User-Agent": bot.user_agent})
         req.raise_for_status()
     except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError) as e:
-        return "Could search for gif"
+        return "Could not search for gif"
 
-    gifId = json.loads(req.text)["data"]["id"]
+    data = json.loads(req.text)
 
-    gifUrl = "http://i.giphy.com/"+gifId+".gif"
+    if not data["data"]:
+        return "'" + text + "' not found."
+    else:
 
-    return "Here is your gif " + gifUrl
+        url = "http://i.giphy.com/" + data["data"]["id"] + ".gif"
+
+        return url
