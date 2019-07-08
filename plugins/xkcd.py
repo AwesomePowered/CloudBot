@@ -1,7 +1,6 @@
 import re
 import requests
 
-from bs4 import BeautifulSoup
 
 from cloudbot import hook
 
@@ -22,15 +21,10 @@ def xkcd_info(xkcd_id, url=False):
 
 def xkcd_search(term):
     search_term = requests.utils.quote(term)
-    request = requests.get("http://www.ohnorobot.com/index.pl?s={}&Search=Search&"
-                           "comic=56&e=0&n=0&b=0&m=0&d=0&t=0".format(search_term))
-    soup = BeautifulSoup(request.text)
-    result = soup.find('li')
-    if result:
-        url = result.find('div', {'class': 'tinylink'}).text
-        xkcd_id = url[:-1].split("/")[-1]
-        print(xkcd_id)
-        return xkcd_info(xkcd_id, url=True)
+    request = requests.get("https://relevantxkcd.appspot.com/process?action=xkcd&query={}".format(search_term))
+    soup = request.text.split()
+    if soup[2].isdigit():
+        return xkcd_info(soup[2], url=True)
     else:
         return "No results found!"
 

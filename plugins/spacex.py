@@ -4,9 +4,11 @@ import json, datetime
 
 link = "https://api.spacexdata.com/v3/launches/next"
 
+
 def getTimeLeft(timestamp):
     delta = datetime.datetime.fromtimestamp(timestamp) - datetime.datetime.now()
     return "{} days {} hours {} minutes".format(delta.days, delta.seconds//3600 % 24, delta.seconds // 60 % 60)
+
 
 @hook.command()
 def spacex(bot):
