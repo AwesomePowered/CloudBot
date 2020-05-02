@@ -3,9 +3,9 @@ from cloudbot.util import http
 import json
 
 yes_prefix=u"\x02\x0f"
-yes_suffix=u": \x033\x02\u2714"
+yes_suffix=u": \x033\x02\u2611\ufe0f"
 no_prefix=u"\x02\x0f"
-no_suffix=u": \x034\x02\u2716"
+no_suffix=u": \x034\x02\U0001F6AB"
 
 @hook.command()
 def mojang():
