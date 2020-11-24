@@ -2,16 +2,20 @@ from cloudbot import hook
 import urllib.request as urlr
 import json, datetime
 
-link = "https://api.spacexdata.com/v3/launches/next"
+api_next = "https://api.spacexdata.com/v4/launches/next"
+api_rocket = "https://api.spacexdata.com/v4/rockets/"
+api_launchpad = "https://api.spacexdata.com/v4/launchpads/"
 
 
 def getTimeLeft(timestamp):
     delta = datetime.datetime.fromtimestamp(timestamp) - datetime.datetime.now()
     return "{} days {} hours {} minutes".format(delta.days, delta.seconds//3600 % 24, delta.seconds // 60 % 60)
 
+def getJson(api_link):
+    data = urlr.urlopen(api_link).read().decode("utf-8")
+    return json.loads(data)
 
 @hook.command()
 def spacex(bot):
-    data = urlr.urlopen(link).read().decode("utf-8")
-    newdata = json.loads(data)
-    return "A {} is scheduled to launch {} from {} in {}".format(newdata["rocket"]["rocket_name"], newdata["mission_name"], newdata["launch_site"]["site_name"], getTimeLeft(newdata["launch_date_unix"]))
+    launch = getJson(api_next)
+    return "A SpaceX {} is scheduled to launch {} from {} in {}".format(getJson(api_rocket+launch["rocket"])["name"], launch["name"], getJson(api_launchpad+launch["launchpad"])["name"], getTimeLeft(launch["date_unix"]))
